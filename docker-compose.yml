@@ -1,0 +1,53 @@
+services:
+  # -----------------------------------------------
+  # Databases (Database-per-service pattern)
+  # -----------------------------------------------
+  db-users:
+    image: mysql:8.0
+    container_name: techhouse-db-users
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: techhouse_users
+    ports:
+      - "33061:3306"
+    volumes:
+      - db_users_data:/var/lib/mysql
+
+  db-products:
+    image: mysql:8.0
+    container_name: techhouse-db-products
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: techhouse_products
+    ports:
+      - "33062:3306"
+    volumes:
+      - db_products_data:/var/lib/mysql
+
+  db-payments:
+    image: mysql:8.0
+    container_name: techhouse-db-payments
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: techhouse_payments
+    ports:
+      - "33063:3306"
+    volumes:
+      - db_payments_data:/var/lib/mysql
+
+  db-assistant:
+    image: mysql:8.0
+    container_name: techhouse-db-assistant
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: techhouse_assistant
+    ports:
+      - "33064:3306"
+    volumes:
+      - db_assistant_data:/var/lib/mysql
+
+volumes:
+  db_users_data:
+  db_products_data:
+  db_payments_data:
+  db_assistant_data:
