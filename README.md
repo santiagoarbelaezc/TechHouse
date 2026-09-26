@@ -68,6 +68,17 @@ Los microservicios se comunican de forma síncrona mediante llamadas HTTP segura
 
 ## 🔧 **Stack Tecnológico**
 
+### **Frontend (SPA Angular 18 - Magnific AI Style)**
+<div align="center">
+  <img src="https://img.shields.io/badge/Angular_18-DD0031?style=for-the-badge&logo=angular&logoColor=white" />
+  <img width="8" />
+  <img src="https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white" />
+  <img width="8" />
+  <img src="https://img.shields.io/badge/Signals_State-DD0031?style=for-the-badge&logo=angular&logoColor=white" />
+  <img width="8" />
+  <img src="https://img.shields.io/badge/Glassmorphism_CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" />
+</div>
+
 ### **Core Backend & Frameworks**
 <div align="center">
   <img src="https://img.shields.io/badge/Laravel_11-FF2D20?style=for-the-badge&logo=laravel&logoColor=white" />
@@ -109,7 +120,7 @@ Los microservicios se comunican de forma síncrona mediante llamadas HTTP segura
 | **Products Service** | Servidor Local / Docker | ✅ 100% Funcional | `http://localhost:8002` |
 | **Payments Service** | Servidor Local / Docker | ✅ 100% Funcional | `http://localhost:8003` |
 | **Assistant Service** | Servidor Local / Docker | ✅ 100% Funcional | `http://localhost:8004` |
-| **Frontend (Angular)** | Angular CLI | 🚧 En desarrollo | `http://localhost:4200` |
+| **Frontend (Angular)** | Angular CLI 18 | ✅ 100% Funcional | `http://localhost:4200` |
 
 ---
 

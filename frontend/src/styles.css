@@ -1,0 +1,132 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap');
+
+:root {
+  --font-main: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+  --font-mono: 'Space Grotesk', monospace;
+
+  /* Color Palette - Magnific AI Inspired (Deep Burgundy, Dark Obsidian & Warm Amber) */
+  --bg-dark: #09090b;
+  --bg-card: rgba(24, 24, 27, 0.65);
+  --bg-card-hover: rgba(39, 39, 42, 0.85);
+  --bg-burgundy: #2e0813;
+  --bg-burgundy-glow: rgba(225, 29, 72, 0.18);
+  --accent-pink: #f43f5e;
+  --accent-rose: #fda4af;
+  --accent-cyan: #06b6d4;
+  --accent-purple: #a855f7;
+
+  --text-primary: #ffffff;
+  --text-secondary: #a1a1aa;
+  --text-muted: #71717a;
+
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-active: rgba(255, 255, 255, 0.22);
+  --border-glow: rgba(244, 63, 94, 0.35);
+
+  --glass-bg: rgba(18, 18, 22, 0.72);
+  --glass-blur: blur(20px);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-font-smoothing: antialiased;
+}
+
+body {
+  font-family: var(--font-main);
+  background-color: var(--bg-dark);
+  color: var(--text-primary);
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.5;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: #09090b;
+}
+::-webkit-scrollbar-thumb {
+  background: #27272a;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #3f3f46;
+}
+
+/* Button & Pill Utilities */
+.pill-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-radius: 9999px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  border: 1px solid transparent;
+}
+
+.pill-btn-primary {
+  background: #ffffff;
+  color: #09090b;
+  border-color: #ffffff;
+}
+.pill-btn-primary:hover {
+  background: #f4f4f5;
+  transform: translateY(-2px);
+  box-shadow: 0 10px 25px -5px rgba(255, 255, 255, 0.25);
+}
+
+.pill-btn-ghost {
+  background: rgba(255, 255, 255, 0.06);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(10px);
+}
+.pill-btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.pill-btn-accent {
+  background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
+  color: #ffffff;
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 20px rgba(244, 63, 94, 0.3);
+}
+.pill-btn-accent:hover {
+  box-shadow: 0 6px 28px rgba(244, 63, 94, 0.5);
+  transform: translateY(-2px);
+}
+
+/* Glassmorphism Containers */
+.glass-panel {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--border-subtle);
+  border-radius: 20px;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulseGlow {
+  0%, 100% { box-shadow: 0 0 15px rgba(244, 63, 94, 0.4); }
+  50% { box-shadow: 0 0 30px rgba(244, 63, 94, 0.8); }
+}
+
+.animate-fade {
+  animation: fadeIn 0.4s ease-out forwards;
+}

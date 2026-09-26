@@ -1,0 +1,704 @@
+<!-- Top Announcement Banner -->
+<div class="announcement-banner">
+  <span>⚡ TechHouse Pro — Envíos asegurados y garantía de 3 años en todos los componentes</span>
+  <span class="banner-arrow">→</span>
+</div>
+
+<!-- Header / Navigation Bar (Magnific Style Glass Navbar) -->
+<header class="navbar-wrapper">
+  <div class="navbar-container">
+    <!-- Brand Logo -->
+    <a href="#" class="brand-logo" (click)="selectCategory('all')">
+      <div class="logo-icon">🏠</div>
+      <div class="logo-text">
+        <span class="logo-name">TechHouse</span>
+        <span class="logo-badge">PRO AI</span>
+      </div>
+    </a>
+
+    <!-- Nav Links -->
+    <nav class="nav-links">
+      <a href="#catalog-section" class="nav-link" (click)="selectCategory('all')">Catálogo</a>
+      <a href="#catalog-section" class="nav-link" (click)="selectCategory('laptops')">Laptops</a>
+      <a href="#catalog-section" class="nav-link" (click)="selectCategory('graficas')">Tarjetas Gráficas</a>
+      <a href="#catalog-section" class="nav-link" (click)="selectCategory('procesadores')">Procesadores</a>
+      <a href="#catalog-section" class="nav-link" (click)="selectCategory('monitores')">Monitores</a>
+      <a href="#catalog-section" class="nav-link" (click)="selectCategory('perifericos')">Periféricos</a>
+    </nav>
+
+    <!-- Search & Actions -->
+    <div class="nav-actions">
+      <!-- Search Pill -->
+      <div class="search-pill">
+        <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input 
+          type="text" 
+          placeholder="Buscar hardware o GPUs..." 
+          [(ngModel)]="searchQuery" 
+          (input)="onSearchChange()" 
+        />
+      </div>
+
+      <!-- Cart Button -->
+      <button class="cart-btn" (click)="isCartOpen.set(true)" title="Ver Carrito">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="9" cy="21" r="1"></circle>
+          <circle cx="20" cy="21" r="1"></circle>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+        </svg>
+        @if (api.cartCount() > 0) {
+          <span class="cart-badge">{{ api.cartCount() }}</span>
+        }
+      </button>
+
+      <!-- Auth Controls -->
+      @if (api.currentUser(); as user) {
+        <div class="user-profile-menu">
+          <span class="user-greeting">Hola, <b>{{ user.name.split(' ')[0] }}</b></span>
+          <button class="pill-btn pill-btn-ghost btn-sm" (click)="logout()">Salir</button>
+        </div>
+      } @else {
+        <button class="auth-text-btn" (click)="authTab.set('login'); isAuthModalOpen.set(true)">Iniciar sesión</button>
+        <button class="pill-btn pill-btn-primary" (click)="authTab.set('register'); isAuthModalOpen.set(true)">Registrarse</button>
+      }
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- ======================================================== -->
+  <!-- HERO SECTION (Magnific AI Style - Warm Burgundy & Tech)  -->
+  <!-- ======================================================== -->
+  <section class="hero-section">
+    <div class="hero-glow-layer"></div>
+    <div class="hero-container">
+      <!-- Left Content -->
+      <div class="hero-content">
+        <div class="hero-tag-pill">
+          <span class="tag-pulse"></span>
+          <span>La plataforma de hardware & IA n.° 1</span>
+          <span class="tag-arrow">→</span>
+        </div>
+
+        <h1 class="hero-title">
+          La tecnología para dirigir tu mejor setup
+        </h1>
+
+        <p class="hero-description">
+          Laptops de alto rendimiento, GPUs de última generación y estaciones de trabajo certificadas. Asesoría técnica con inteligencia artificial para elegir exactamente lo que tu flujo de trabajo necesita.
+        </p>
+
+        <div class="hero-cta-group">
+          <a href="#catalog-section" class="pill-btn pill-btn-primary">
+            Explorar Catálogo
+          </a>
+          <button class="pill-btn pill-btn-ghost" (click)="isChatOpen.set(true)">
+            <span class="sparkle-icon">✨</span>
+            Consultar con IA
+          </button>
+        </div>
+      </div>
+
+      <!-- Right Interactive Category Vertical Slider (Matching Magnific UI) -->
+      <div class="hero-slider-panel">
+        <div class="hero-slider-list">
+          @for (item of heroTabs; track item.title; let i = $index) {
+            <div 
+              class="hero-slider-item" 
+              [class.active]="heroTab() === i"
+              (click)="setHeroTab(i)"
+            >
+              @if (heroTab() === i) {
+                <span class="play-indicator">▶</span>
+              }
+              <span class="slider-text">{{ item.title }}</span>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================== -->
+  <!-- SEGMENTED DOCK BAR (Magnific Category Switcher)           -->
+  <!-- ======================================================== -->
+  <section class="dock-section" id="catalog-section">
+    <div class="dock-header">
+      <h2 class="dock-title">Un ecosistema para rendir sin límites</h2>
+      <p class="dock-subtitle">Elige tu categoría. Cada componente, cada marca, cada formato.</p>
+    </div>
+
+    <!-- Segmented Pill Control -->
+    <div class="segmented-dock-wrapper">
+      <div class="segmented-dock">
+        <button 
+          class="dock-pill" 
+          [class.active]="selectedCategory() === 'all'" 
+          (click)="selectCategory('all')"
+        >
+          <span>Todos los productos</span>
+        </button>
+
+        <button 
+          class="dock-pill" 
+          [class.active]="selectedCategory() === 'laptops'" 
+          (click)="selectCategory('laptops')"
+        >
+          <span>Laptops</span>
+          <span class="pill-badge-pink">Nuevo</span>
+        </button>
+
+        <button 
+          class="dock-pill" 
+          [class.active]="selectedCategory() === 'graficas'" 
+          (click)="selectCategory('graficas')"
+        >
+          <span>Tarjetas Gráficas</span>
+          <span class="pill-badge-top">Top</span>
+        </button>
+
+        <button 
+          class="dock-pill" 
+          [class.active]="selectedCategory() === 'procesadores'" 
+          (click)="selectCategory('procesadores')"
+        >
+          <span>Procesadores</span>
+        </button>
+
+        <button 
+          class="dock-pill" 
+          [class.active]="selectedCategory() === 'monitores'" 
+          (click)="selectCategory('monitores')"
+        >
+          <span>Monitores</span>
+          <span class="pill-badge-pink">Nuevo</span>
+        </button>
+
+        <button 
+          class="dock-pill" 
+          [class.active]="selectedCategory() === 'perifericos'" 
+          (click)="selectCategory('perifericos')"
+        >
+          <span>Periféricos</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================== -->
+  <!-- BENTO GRID SHOWCASE (Magnific Grid Style)                -->
+  <!-- ======================================================== -->
+  <section class="bento-section">
+    <div class="bento-grid">
+      <!-- Card 1: Fast Delivery & Hardware Collection -->
+      <div class="bento-card bento-light">
+        <div class="bento-card-content">
+          <span class="bento-badge">Entrega Rápida</span>
+          <h3 class="bento-title">Todo tu hardware, listo para usar</h3>
+          <p class="bento-text">
+            Stock en tiempo real validado por microservicios. Desde GPUs de grado servidor hasta teclados custom mecánicos.
+          </p>
+        </div>
+        <div class="bento-tags-row">
+          <span class="bento-chip active">ALL</span>
+          <span class="bento-chip">LAPTOPS</span>
+          <span class="bento-chip">GPUS</span>
+          <span class="bento-chip">SCREENS</span>
+        </div>
+      </div>
+
+      <!-- Card 2: Interactive AI Assistant Node -->
+      <div class="bento-card bento-dark">
+        <div class="bento-card-content">
+          <div class="node-tag">
+            <span class="node-dot"></span>
+            <span>Microservicio Assistant :8004</span>
+          </div>
+          <h3 class="bento-title">Tu asesor tecnológico con inteligencia artificial</h3>
+          <p class="bento-text">
+            Pregunta compatibilidades, cuello de botella o recomendaciones para tu presupuesto. El asistente consulta el catálogo en caché y te guía paso a paso.
+          </p>
+        </div>
+        <div class="bento-interactive-pill" (click)="isChatOpen.set(true)">
+          <span class="sparkle">✨</span>
+          <span>Abrir Asistente TechHouse</span>
+          <span class="arrow">→</span>
+        </div>
+      </div>
+
+      <!-- Card 3: Saga Distributed Architecture -->
+      <div class="bento-card bento-burgundy">
+        <div class="bento-card-content">
+          <span class="bento-badge bento-badge-burgundy">Arquitectura Saga</span>
+          <h3 class="bento-title">Checkout atómico y reservas sin colisiones</h3>
+          <p class="bento-text">
+            Mecanismo de bloqueo con compensación automática entre `payments-service` y `products-service`. Stock garantizado.
+          </p>
+        </div>
+      </div>
+
+      <!-- Card 4: 1-Click Purchase -->
+      <div class="bento-card bento-cyan">
+        <div class="bento-card-content">
+          <h3 class="bento-title">Compra en un solo clic</h3>
+          <p class="bento-text">
+            Experiencia fluida integrada con múltiples pasarelas seguras.
+          </p>
+        </div>
+        <button class="bento-action-btn" (click)="isCartOpen.set(true)">
+          VER CARRITO ({{ api.cartCount() }})
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================================================== -->
+  <!-- CATALOG PRODUCTS GRID                                    -->
+  <!-- ======================================================== -->
+  <section class="products-section">
+    <div class="section-header-row">
+      <div>
+        <h2 class="section-heading">Catálogo de Productos Disponibles</h2>
+        <p class="section-subheading">
+          Mostrando {{ products().length }} componentes certificados con garantía directa de fábrica.
+        </p>
+      </div>
+      @if (selectedCategory() !== 'all') {
+        <button class="pill-btn pill-btn-ghost btn-sm" (click)="selectCategory('all')">
+          Limpiar Filtros ✕
+        </button>
+      }
+    </div>
+
+    <!-- Product Grid -->
+    @if (loading()) {
+      <div class="loading-state">
+        <div class="loading-spinner"></div>
+        <p>Cargando catálogo desde microservicios...</p>
+      </div>
+    } @else {
+      @if (products().length === 0) {
+        <div class="empty-state">
+          <span class="empty-icon">🔍</span>
+          <h3>No se encontraron productos</h3>
+          <p>Prueba buscando con otro término o seleccionando otra categoría.</p>
+          <button class="pill-btn pill-btn-primary" (click)="selectCategory('all'); searchQuery.set('')">
+            Ver Todo el Catálogo
+          </button>
+        </div>
+      } @else {
+        <div class="product-cards-grid">
+          @for (prod of products(); track prod.id) {
+            <div class="product-card" (click)="openProductDetail(prod)">
+              <!-- Card Image & Badge -->
+              <div class="product-image-box">
+                @if (prod.image_url) {
+                  <img [src]="prod.image_url" [alt]="prod.name" loading="lazy" />
+                } @else {
+                  <div class="placeholder-img">🖥️</div>
+                }
+                <span class="stock-tag" [class.low-stock]="prod.stock < 10">
+                  {{ prod.stock > 0 ? prod.stock + ' en stock' : 'Agotado' }}
+                </span>
+                <span class="category-tag">{{ prod.category?.name || 'Hardware' }}</span>
+              </div>
+
+              <!-- Card Content -->
+              <div class="product-info">
+                <h3 class="product-title">{{ prod.name }}</h3>
+                <p class="product-desc">{{ prod.description }}</p>
+
+                <!-- Specs Pill previews -->
+                @if (prod.specs) {
+                  <div class="specs-preview-list">
+                    @for (spec of getSpecsEntries(prod.specs) | slice:0:2; track spec.key) {
+                      <span class="spec-pill"><b>{{ spec.key }}:</b> {{ spec.value }}</span>
+                    }
+                  </div>
+                }
+
+                <!-- Price & CTA -->
+                <div class="product-bottom-row">
+                  <div class="price-box">
+                    <span class="currency">$</span>
+                    <span class="amount">{{ prod.price | number:'1.2-2' }}</span>
+                  </div>
+
+                  <button 
+                    class="pill-btn pill-btn-primary btn-sm add-btn"
+                    [disabled]="prod.stock <= 0"
+                    (click)="addToCart(prod, $event)"
+                  >
+                    <span>+ Añadir</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      }
+    }
+  </section>
+</main>
+
+<!-- ======================================================== -->
+  <!-- SHOPPING CART SLIDE-OVER DRAWER                         -->
+<!-- ======================================================== -->
+@if (isCartOpen()) {
+  <div class="modal-backdrop animate-fade" (click)="isCartOpen.set(false)">
+    <div class="cart-drawer" (click)="$event.stopPropagation()">
+      <div class="drawer-header">
+        <div class="drawer-title-row">
+          <h3>Carrito de Compras</h3>
+          <span class="cart-counter">({{ api.cartCount() }} ítems)</span>
+        </div>
+        <button class="close-btn" (click)="isCartOpen.set(false)">✕</button>
+      </div>
+
+      <!-- Drawer Body -->
+      <div class="drawer-body">
+        @if (api.cartItems().length === 0) {
+          <div class="cart-empty-message">
+            <span class="empty-cart-icon">🛒</span>
+            <h4>Tu carrito está vacío</h4>
+            <p>Explora el catálogo y añade los mejores componentes a tu setup.</p>
+            <button class="pill-btn pill-btn-primary" (click)="isCartOpen.set(false)">
+              Continuar Comprando
+            </button>
+          </div>
+        } @else {
+          <div class="cart-items-list">
+            @for (item of api.cartItems(); track item.product.id) {
+              <div class="cart-item-row">
+                <img [src]="item.product.image_url" [alt]="item.product.name" class="cart-item-thumb" />
+                <div class="cart-item-details">
+                  <h4 class="cart-item-name">{{ item.product.name }}</h4>
+                  <div class="cart-item-price">${{ item.product.price | number:'1.2-2' }}</div>
+                  
+                  <div class="cart-qty-controls">
+                    <button class="qty-btn" (click)="api.updateQuantity(item.product.id, item.quantity - 1)">-</button>
+                    <span class="qty-number">{{ item.quantity }}</span>
+                    <button class="qty-btn" (click)="api.updateQuantity(item.product.id, item.quantity + 1)">+</button>
+                    <button class="remove-btn" (click)="api.removeFromCart(item.product.id)" title="Eliminar">🗑️</button>
+                  </div>
+                </div>
+              </div>
+            }
+          </div>
+
+          <!-- Checkout Form -->
+          <div class="checkout-form-box">
+            <h4>Método de Pago</h4>
+            <div class="payment-methods-grid">
+              <label class="payment-option" [class.selected]="selectedPaymentMethod() === 'credit_card'">
+                <input type="radio" name="payment" value="credit_card" [(ngModel)]="selectedPaymentMethod" />
+                <span>💳 Tarjeta</span>
+              </label>
+              <label class="payment-option" [class.selected]="selectedPaymentMethod() === 'paypal'">
+                <input type="radio" name="payment" value="paypal" [(ngModel)]="selectedPaymentMethod" />
+                <span>🅿️ PayPal</span>
+              </label>
+              <label class="payment-option" [class.selected]="selectedPaymentMethod() === 'pse'">
+                <input type="radio" name="payment" value="pse" [(ngModel)]="selectedPaymentMethod" />
+                <span>🏦 PSE</span>
+              </label>
+            </div>
+
+            @if (checkoutError()) {
+              <div class="error-banner">
+                <span>⚠️ {{ checkoutError() }}</span>
+              </div>
+            }
+
+            <div class="cart-summary-totals">
+              <div class="summary-line">
+                <span>Subtotal</span>
+                <span>${{ api.cartTotal() | number:'1.2-2' }}</span>
+              </div>
+              <div class="summary-line">
+                <span>Envío asegurado</span>
+                <span class="text-green">GRATIS</span>
+              </div>
+              <div class="summary-line total-line">
+                <span>Total a Pagar</span>
+                <span class="total-amount">${{ api.cartTotal() | number:'1.2-2' }}</span>
+              </div>
+            </div>
+
+            <button 
+              class="pill-btn pill-btn-primary btn-block checkout-action-btn"
+              [disabled]="checkoutLoading()"
+              (click)="processCheckout()"
+            >
+              @if (checkoutLoading()) {
+                <span>Procesando con microservicios...</span>
+              } @else {
+                <span>Confirmar Orden & Pagar →</span>
+              }
+            </button>
+          </div>
+        }
+      </div>
+    </div>
+  </div>
+}
+
+<!-- ======================================================== -->
+<!-- CHECKOUT SUCCESS MODAL                                   -->
+<!-- ======================================================== -->
+@if (checkoutSuccess(); as success) {
+  <div class="modal-backdrop animate-fade">
+    <div class="glass-modal success-modal">
+      <div class="success-icon">🎉</div>
+      <h2>¡Orden Confirmada con Éxito!</h2>
+      <p class="success-message">
+        Tu pago ha sido procesado de forma transaccional mediante el patrón Saga entre <b>payments-service</b> y <b>products-service</b>.
+      </p>
+
+      <div class="order-receipt-box">
+        <div class="receipt-row">
+          <span>Referencia de Pago:</span>
+          <b class="text-mono">{{ success.reference }}</b>
+        </div>
+        <div class="receipt-row">
+          <span>ID de la Orden:</span>
+          <b>#{{ success.orderId }}</b>
+        </div>
+        <div class="receipt-row">
+          <span>Monto Total:</span>
+          <b>${{ success.total | number:'1.2-2' }}</b>
+        </div>
+      </div>
+
+      <button class="pill-btn pill-btn-primary btn-block" (click)="checkoutSuccess.set(null); isCartOpen.set(false)">
+        Volver a la Tienda
+      </button>
+    </div>
+  </div>
+}
+
+<!-- ======================================================== -->
+<!-- PRODUCT DETAIL MODAL                                     -->
+<!-- ======================================================== -->
+@if (selectedProduct(); as prod) {
+  <div class="modal-backdrop animate-fade" (click)="closeProductDetail()">
+    <div class="glass-modal detail-modal" (click)="$event.stopPropagation()">
+      <button class="modal-close-icon" (click)="closeProductDetail()">✕</button>
+
+      <div class="detail-grid">
+        <div class="detail-image-col">
+          <img [src]="prod.image_url" [alt]="prod.name" />
+        </div>
+
+        <div class="detail-info-col">
+          <span class="detail-cat-badge">{{ prod.category?.name || 'Tecnología' }}</span>
+          <h2 class="detail-title">{{ prod.name }}</h2>
+          <p class="detail-desc">{{ prod.description }}</p>
+
+          <div class="detail-price-box">
+            <span class="price-val">${{ prod.price | number:'1.2-2' }}</span>
+            <span class="stock-status">{{ prod.stock }} unidades disponibles</span>
+          </div>
+
+          <!-- Specs Table -->
+          @if (prod.specs) {
+            <div class="specs-table-container">
+              <h4>Ficha Técnica</h4>
+              <table class="specs-table">
+                @for (spec of getSpecsEntries(prod.specs); track spec.key) {
+                  <tr>
+                    <td class="spec-label">{{ spec.key }}</td>
+                    <td class="spec-val">{{ spec.value }}</td>
+                  </tr>
+                }
+              </table>
+            </div>
+          }
+
+          <div class="detail-actions">
+            <button 
+              class="pill-btn pill-btn-primary btn-block"
+              [disabled]="prod.stock <= 0"
+              (click)="addToCart(prod); closeProductDetail(); isCartOpen.set(true)"
+            >
+              Añadir al Carrito y Comprar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+}
+
+<!-- ======================================================== -->
+<!-- AUTH MODAL (LOGIN / REGISTER)                            -->
+<!-- ======================================================== -->
+@if (isAuthModalOpen()) {
+  <div class="modal-backdrop animate-fade" (click)="isAuthModalOpen.set(false)">
+    <div class="glass-modal auth-modal" (click)="$event.stopPropagation()">
+      <button class="modal-close-icon" (click)="isAuthModalOpen.set(false)">✕</button>
+
+      <!-- Tab Buttons -->
+      <div class="auth-tabs-row">
+        <button 
+          class="auth-tab" 
+          [class.active]="authTab() === 'login'"
+          (click)="authTab.set('login'); authError.set(null)"
+        >
+          Iniciar Sesión
+        </button>
+        <button 
+          class="auth-tab" 
+          [class.active]="authTab() === 'register'"
+          (click)="authTab.set('register'); authError.set(null)"
+        >
+          Crear Cuenta
+        </button>
+      </div>
+
+      @if (authError()) {
+        <div class="error-banner">
+          <span>{{ authError() }}</span>
+        </div>
+      }
+
+      <form (submit)="$event.preventDefault(); submitAuth()" class="auth-form">
+        @if (authTab() === 'register') {
+          <div class="form-group">
+            <label>Nombre Completo</label>
+            <input type="text" [(ngModel)]="authName" name="name" required placeholder="Tu nombre" />
+          </div>
+        }
+
+        <div class="form-group">
+          <label>Correo Electrónico</label>
+          <input type="email" [(ngModel)]="authEmail" name="email" required placeholder="tu@correo.com" />
+        </div>
+
+        <div class="form-group">
+          <label>Contraseña</label>
+          <input type="password" [(ngModel)]="authPassword" name="password" required placeholder="••••••••" />
+        </div>
+
+        @if (authTab() === 'register') {
+          <div class="form-group">
+            <label>Dirección de Envío</label>
+            <input type="text" [(ngModel)]="authAddress" name="address" placeholder="Dirección principal" />
+          </div>
+          <div class="form-group">
+            <label>Teléfono</label>
+            <input type="text" [(ngModel)]="authPhone" name="phone" placeholder="+57 300..." />
+          </div>
+        }
+
+        <button type="submit" class="pill-btn pill-btn-primary btn-block" [disabled]="authLoading()">
+          @if (authLoading()) {
+            <span>Conectando con users-service...</span>
+          } @else {
+            <span>{{ authTab() === 'login' ? 'Iniciar Sesión' : 'Crear Cuenta' }} →</span>
+          }
+        </button>
+      </form>
+    </div>
+  </div>
+}
+
+<!-- ======================================================== -->
+<!-- FLOATING AI ASSISTANT CHAT WIDGET                        -->
+<!-- ======================================================== -->
+<div class="floating-chat-container">
+  @if (!isChatOpen()) {
+    <button class="chat-trigger-btn" (click)="isChatOpen.set(true)" title="Hablar con Asistente TechHouse">
+      <span class="chat-pulse"></span>
+      <span class="chat-icon">✨</span>
+      <span class="chat-label">Asistente IA</span>
+    </button>
+  } @else {
+    <div class="chat-window-box glass-panel animate-fade">
+      <div class="chat-header">
+        <div class="chat-header-info">
+          <div class="bot-avatar">🤖</div>
+          <div>
+            <h4>TechHouse AI</h4>
+            <span class="bot-status"><span class="status-dot"></span> En línea :8004</span>
+          </div>
+        </div>
+        <button class="chat-close-btn" (click)="isChatOpen.set(false)">✕</button>
+      </div>
+
+      <!-- Messages list -->
+      <div class="chat-messages-scroll">
+        @for (msg of chatMessages(); track $index) {
+          <div class="chat-bubble" [class.user]="msg.role === 'user'" [class.assistant]="msg.role === 'assistant'">
+            <div class="bubble-content" [innerHTML]="msg.content"></div>
+          </div>
+        }
+        @if (chatLoading()) {
+          <div class="chat-bubble assistant typing">
+            <span>Consultando catálogo y generando respuesta...</span>
+          </div>
+        }
+      </div>
+
+      <!-- Input form -->
+      <form class="chat-input-bar" (submit)="$event.preventDefault(); sendChatMessage()">
+        <input 
+          type="text" 
+          placeholder="Pregunta por laptops, GPUs, stock..." 
+          [(ngModel)]="chatInput" 
+          name="chatMsg"
+          [disabled]="chatLoading()"
+        />
+        <button type="submit" class="send-btn" [disabled]="!chatInput().trim() || chatLoading()">
+          ➤
+        </button>
+      </form>
+    </div>
+  }
+</div>
+
+<!-- ======================================================== -->
+<!-- FOOTER                                                   -->
+<!-- ======================================================== -->
+<footer class="footer-wrapper">
+  <div class="footer-container">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <div class="brand-logo">
+          <span class="logo-icon">🏠</span>
+          <span class="logo-name">TechHouse</span>
+        </div>
+        <p class="footer-tagline">
+          Ecosistema integral de hardware de alto rendimiento impulsado por microservicios en Laravel 11 y Angular.
+        </p>
+      </div>
+
+      <div class="footer-links-group">
+        <h4>Microservicios</h4>
+        <ul>
+          <li><span>Users Service (:8001)</span></li>
+          <li><span>Products Service (:8002)</span></li>
+          <li><span>Payments Service (:8003)</span></li>
+          <li><span>Assistant Service (:8004)</span></li>
+        </ul>
+      </div>
+
+      <div class="footer-links-group">
+        <h4>Garantía & Envíos</h4>
+        <ul>
+          <li><span>Garantía Pro 3 Años</span></li>
+          <li><span>Ensamble y Pruebas de Estrés</span></li>
+          <li><span>Soporte Técnico Especializado</span></li>
+          <li><span>Rastreo de Envíos</span></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <p>© 2026 TechHouse Inc. Diseñado para rendimiento extremo.</p>
+    </div>
+  </div>
+</footer>
