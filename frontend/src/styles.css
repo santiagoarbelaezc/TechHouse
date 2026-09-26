@@ -1,132 +1,206 @@
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
+/* ===================================================================
+   DESIGN SYSTEM — Apple-inspired: clean, minimal, premium
+=================================================================== */
 :root {
-  --font-main: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-  --font-mono: 'Space Grotesk', monospace;
+  --font: 'Inter', -apple-system, BlinkMacSystemFont, 'SF Pro Display', system-ui, sans-serif;
 
-  /* Color Palette - Magnific AI Inspired (Deep Burgundy, Dark Obsidian & Warm Amber) */
-  --bg-dark: #09090b;
-  --bg-card: rgba(24, 24, 27, 0.65);
-  --bg-card-hover: rgba(39, 39, 42, 0.85);
-  --bg-burgundy: #2e0813;
-  --bg-burgundy-glow: rgba(225, 29, 72, 0.18);
-  --accent-pink: #f43f5e;
-  --accent-rose: #fda4af;
-  --accent-cyan: #06b6d4;
-  --accent-purple: #a855f7;
+  /* Background layers */
+  --bg:        #000000;
+  --bg-1:      #0a0a0a;
+  --bg-2:      #111111;
+  --bg-3:      #1a1a1a;
+  --bg-4:      #222222;
 
-  --text-primary: #ffffff;
-  --text-secondary: #a1a1aa;
-  --text-muted: #71717a;
+  /* Surface (cards, modals) */
+  --surface:          rgba(28, 28, 30, 0.85);
+  --surface-hover:    rgba(38, 38, 40, 0.95);
+  --surface-border:   rgba(255, 255, 255, 0.08);
+  --surface-border-hover: rgba(255, 255, 255, 0.18);
 
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-active: rgba(255, 255, 255, 0.22);
-  --border-glow: rgba(244, 63, 94, 0.35);
+  /* Glassmorphism */
+  --glass:     rgba(20, 20, 22, 0.7);
+  --glass-border: rgba(255, 255, 255, 0.1);
+  --blur:      blur(24px);
+  --blur-sm:   blur(12px);
 
-  --glass-bg: rgba(18, 18, 22, 0.72);
-  --glass-blur: blur(20px);
+  /* Text */
+  --text-primary:   #f5f5f7;
+  --text-secondary: #86868b;
+  --text-tertiary:  #636366;
+
+  /* Accent — subtle blue (Apple Blue) */
+  --accent:         #0a84ff;
+  --accent-soft:    rgba(10, 132, 255, 0.15);
+  --accent-border:  rgba(10, 132, 255, 0.3);
+
+  /* Semantic */
+  --green:     #30d158;
+  --green-soft: rgba(48, 209, 88, 0.15);
+  --red:       #ff453a;
+  --red-soft:  rgba(255, 69, 58, 0.15);
+  --orange:    #ff9f0a;
+
+  /* Dividers */
+  --divider:   rgba(255, 255, 255, 0.06);
+
+  /* Radii */
+  --radius-sm:  8px;
+  --radius:     14px;
+  --radius-lg:  20px;
+  --radius-xl:  28px;
+  --radius-pill: 9999px;
+
+  /* Shadows */
+  --shadow-sm:  0 2px 8px rgba(0,0,0,0.35);
+  --shadow:     0 8px 24px rgba(0,0,0,0.5);
+  --shadow-lg:  0 20px 60px rgba(0,0,0,0.7);
 }
 
-* {
+/* ===================================================================
+   RESET & BASE
+=================================================================== */
+*, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
-  -webkit-font-smoothing: antialiased;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  font-family: var(--font-main);
-  background-color: var(--bg-dark);
+  font-family: var(--font);
+  background: var(--bg);
   color: var(--text-primary);
   min-height: 100vh;
   overflow-x: hidden;
   line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-::-webkit-scrollbar-track {
-  background: #09090b;
-}
-::-webkit-scrollbar-thumb {
-  background: #27272a;
-  border-radius: 4px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #3f3f46;
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.12); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255,255,255,0.2); }
+
+/* ===================================================================
+   TYPOGRAPHY
+=================================================================== */
+h1, h2, h3, h4, h5 {
+  letter-spacing: -0.025em;
+  line-height: 1.1;
+  color: var(--text-primary);
 }
 
-/* Button & Pill Utilities */
-.pill-btn {
+/* ===================================================================
+   BUTTON SYSTEM
+=================================================================== */
+.btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
-  padding: 10px 22px;
-  border-radius: 9999px;
-  font-size: 0.9rem;
-  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: var(--radius-pill);
+  font-family: var(--font);
+  font-size: 0.875rem;
+  font-weight: 500;
+  letter-spacing: -0.01em;
   text-decoration: none;
   cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  border: 1px solid transparent;
+  border: none;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  user-select: none;
+}
+.btn:disabled {
+  opacity: 0.4;
+  pointer-events: none;
 }
 
-.pill-btn-primary {
-  background: #ffffff;
-  color: #09090b;
-  border-color: #ffffff;
+/* Primary: white solid (Apple CTA style) */
+.btn-primary {
+  background: var(--text-primary);
+  color: #000;
 }
-.pill-btn-primary:hover {
-  background: #f4f4f5;
-  transform: translateY(-2px);
-  box-shadow: 0 10px 25px -5px rgba(255, 255, 255, 0.25);
-}
-
-.pill-btn-ghost {
-  background: rgba(255, 255, 255, 0.06);
-  color: #ffffff;
-  border-color: rgba(255, 255, 255, 0.12);
-  backdrop-filter: blur(10px);
-}
-.pill-btn-ghost:hover {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.3);
-  transform: translateY(-2px);
+.btn-primary:hover {
+  background: #e8e8ed;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(255,255,255,0.15);
 }
 
-.pill-btn-accent {
-  background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
-  color: #ffffff;
-  border-color: rgba(255, 255, 255, 0.2);
-  box-shadow: 0 4px 20px rgba(244, 63, 94, 0.3);
+/* Secondary: ghost/outlined */
+.btn-ghost {
+  background: rgba(255,255,255,0.08);
+  color: var(--text-primary);
+  border: 1px solid var(--surface-border);
+  backdrop-filter: var(--blur-sm);
 }
-.pill-btn-accent:hover {
-  box-shadow: 0 6px 28px rgba(244, 63, 94, 0.5);
-  transform: translateY(-2px);
-}
-
-/* Glassmorphism Containers */
-.glass-panel {
-  background: var(--glass-bg);
-  backdrop-filter: var(--glass-blur);
-  -webkit-backdrop-filter: var(--glass-blur);
-  border: 1px solid var(--border-subtle);
-  border-radius: 20px;
+.btn-ghost:hover {
+  background: rgba(255,255,255,0.14);
+  border-color: var(--surface-border-hover);
 }
 
-/* Animations */
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+/* Accent: blue */
+.btn-accent {
+  background: var(--accent);
+  color: #fff;
+}
+.btn-accent:hover {
+  background: #0077ed;
+  box-shadow: 0 4px 16px rgba(10,132,255,0.4);
 }
 
-@keyframes pulseGlow {
-  0%, 100% { box-shadow: 0 0 15px rgba(244, 63, 94, 0.4); }
-  50% { box-shadow: 0 0 30px rgba(244, 63, 94, 0.8); }
+/* Sizes */
+.btn-sm { padding: 7px 14px; font-size: 0.8rem; }
+.btn-lg { padding: 14px 28px; font-size: 1rem; font-weight: 600; }
+.btn-block { width: 100%; }
+
+/* ===================================================================
+   GLASSMORPHISM SURFACES
+=================================================================== */
+.glass {
+  background: var(--glass);
+  backdrop-filter: var(--blur);
+  -webkit-backdrop-filter: var(--blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-lg);
 }
 
-.animate-fade {
-  animation: fadeIn 0.4s ease-out forwards;
+/* ===================================================================
+   ANIMATIONS
+=================================================================== */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+.animate-fade   { animation: fadeUp   0.35s cubic-bezier(0.16,1,0.3,1) forwards; }
+.animate-scale  { animation: scaleIn  0.3s  cubic-bezier(0.16,1,0.3,1) forwards; }
+
+/* ===================================================================
+   BACKWARD COMPAT ALIASES (pill-btn → btn)
+=================================================================== */
+.pill-btn         { @extend .btn; }
+.pill-btn-primary { }
+.pill-btn-ghost   { }

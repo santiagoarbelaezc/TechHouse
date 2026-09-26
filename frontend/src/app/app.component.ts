@@ -220,4 +220,24 @@ export class AppComponent implements OnInit {
     if (!specs) return [];
     return Object.entries(specs).map(([key, value]) => ({ key, value }));
   }
+
+  // Maps category slug → local product image asset
+  getCategoryImage(slug?: string): string {
+    const map: Record<string, string> = {
+      laptops:       'assets/products/laptop.jpg',
+      graficas:      'assets/products/gpu.jpg',
+      procesadores:  'assets/products/cpu.jpg',
+      monitores:     'assets/products/monitor.jpg',
+      perifericos:   'assets/products/keyboard.jpg',
+    };
+    return (slug && map[slug]) ? map[slug] : 'assets/products/workstation.jpg';
+  }
+
+  // Fallback when an image fails to load
+  onImgError(event: Event, slug?: string): void {
+    const el = event.target as HTMLImageElement;
+    // Prevent infinite loop if fallback also fails
+    el.onerror = null;
+    el.src = this.getCategoryImage(slug);
+  }
 }
