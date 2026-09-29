@@ -221,23 +221,46 @@ export class AppComponent implements OnInit {
     return Object.entries(specs).map(([key, value]) => ({ key, value }));
   }
 
-  // Maps category slug → local product image asset
-  getCategoryImage(slug?: string): string {
+  // Maps category slug or product name → local product image asset
+  getCategoryImage(slug?: string, productName?: string): string {
+    if (productName) {
+      const lower = productName.toLowerCase();
+      if (lower.includes('mouse') || lower.includes('ratón') || lower.includes('raton')) return 'assets/products/mouse.jpg';
+      if (lower.includes('headset') || lower.includes('auricular') || lower.includes('audifono') || lower.includes('audífono')) return 'assets/products/headset.jpg';
+      if (lower.includes('micrófono') || lower.includes('microfono')) return 'assets/products/microphone.jpg';
+      if (lower.includes('webcam') || lower.includes('cámara') || lower.includes('camara')) return 'assets/products/webcam.jpg';
+      if (lower.includes('ram')) return 'assets/products/ram.jpg';
+      if (lower.includes('ssd') || lower.includes('nvme')) return 'assets/products/ssd.jpg';
+      if (lower.includes('motherboard') || lower.includes('placa base') || lower.includes('tarjeta madre')) return 'assets/products/motherboard.jpg';
+      if (lower.includes('silla')) return 'assets/products/chair.jpg';
+      if (lower.includes('smartwatch') || lower.includes('reloj')) return 'assets/products/smartwatch.jpg';
+      if (lower.includes('teclado') || lower.includes('keyboard')) return 'assets/products/keyboard.jpg';
+      if (lower.includes('monitor') || lower.includes('pantalla')) return 'assets/products/monitor.jpg';
+      if (lower.includes('laptop') || lower.includes('macbook') || lower.includes('notebook')) return 'assets/products/laptop.jpg';
+      if (lower.includes('rtx') || lower.includes('geforce') || lower.includes('gráfica') || lower.includes('grafica') || lower.includes('gpu')) return 'assets/products/gpu.jpg';
+      if (lower.includes('ryzen') || lower.includes('core') || lower.includes('procesador') || lower.includes('cpu')) return 'assets/products/cpu.jpg';
+    }
+
     const map: Record<string, string> = {
       laptops:       'assets/products/laptop.jpg',
       graficas:      'assets/products/gpu.jpg',
       procesadores:  'assets/products/cpu.jpg',
       monitores:     'assets/products/monitor.jpg',
       perifericos:   'assets/products/keyboard.jpg',
+      mouse:         'assets/products/mouse.jpg',
+      audio:         'assets/products/headset.jpg',
+      componentes:   'assets/products/motherboard.jpg',
+      almacenamiento:'assets/products/ssd.jpg',
     };
     return (slug && map[slug]) ? map[slug] : 'assets/products/workstation.jpg';
   }
 
   // Fallback when an image fails to load
-  onImgError(event: Event, slug?: string): void {
+  onImgError(event: Event, slug?: string, productName?: string): void {
     const el = event.target as HTMLImageElement;
     // Prevent infinite loop if fallback also fails
     el.onerror = null;
-    el.src = this.getCategoryImage(slug);
+    el.src = this.getCategoryImage(slug, productName);
   }
 }
+

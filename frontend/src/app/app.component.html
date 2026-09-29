@@ -235,10 +235,10 @@
             <article class="product-card" (click)="openProductDetail(prod)">
               <div class="product-image-box">
                 <img
-                  [src]="prod.image_url || getCategoryImage(prod.category?.slug)"
+                  [src]="prod.image_url || getCategoryImage(prod.category?.slug, prod.name)"
                   [alt]="prod.name"
                   loading="lazy"
-                  (error)="onImgError($event, prod.category?.slug)"
+                  (error)="onImgError($event, prod.category?.slug, prod.name)"
                 />
                 <span class="stock-tag" [class.low]="prod.stock < 10">
                   {{ prod.stock > 0 ? prod.stock + ' en stock' : 'Agotado' }}
@@ -306,10 +306,10 @@
             @for (item of api.cartItems(); track item.product.id) {
               <div class="cart-row">
                 <img
-                  [src]="item.product.image_url || getCategoryImage(item.product.category?.slug)"
+                  [src]="item.product.image_url || getCategoryImage(item.product.category?.slug, item.product.name)"
                   [alt]="item.product.name"
                   class="cart-thumb"
-                  (error)="onImgError($event, item.product.category?.slug)"
+                  (error)="onImgError($event, item.product.category?.slug, item.product.name)"
                 />
                 <div class="cart-row-info">
                   <p class="cart-item-name">{{ item.product.name }}</p>
@@ -415,7 +415,7 @@
       </button>
       <div class="detail-grid">
         <div class="detail-img">
-          <img [src]="prod.image_url || getCategoryImage(prod.category?.slug)" [alt]="prod.name" (error)="onImgError($event, prod.category?.slug)"/>
+          <img [src]="prod.image_url || getCategoryImage(prod.category?.slug, prod.name)" [alt]="prod.name" (error)="onImgError($event, prod.category?.slug, prod.name)"/>
         </div>
         <div class="detail-info">
           <span class="detail-cat">{{ prod.category?.name || 'Tecnología' }}</span>
