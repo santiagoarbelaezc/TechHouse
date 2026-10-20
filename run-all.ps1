@@ -1,7 +1,24 @@
 # TechHouse Microservices & Frontend Launcher
+param (
+    [switch]$ResetDb
+)
+
 Write-Host "=========================================" -ForegroundColor Cyan
 Write-Host "      Iniciando Ecosistema TechHouse     " -ForegroundColor Cyan
 Write-Host "=========================================" -ForegroundColor Cyan
+
+if ($ResetDb) {
+    Write-Host "Ejecutando reinicio completo y limpio de bases de datos..." -ForegroundColor Yellow
+    & "$PSScriptRoot\reset-db.ps1"
+} else {
+    # Verificar si los contenedores de base de datos están corriendo
+    $runningContainers = docker compose ps --status running -q 2>$null
+    if (-not $runningContainers) {
+        Write-Host "Iniciando contenedores de base de datos en segundo plano..." -ForegroundColor Yellow
+        docker compose up -d
+    }
+}
+
 
 $services = @(
     @{ Name = "Users Service";     Path = "users-service";     Port = 8001; Color = "Green";   Cmd = "php artisan serve --port=8001" },
